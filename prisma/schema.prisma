@@ -1,0 +1,88 @@
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+model User {
+  id        String      @id @default(uuid())
+  createdAt DateTime @default(now())
+  email     String   @unique
+  name      String?
+  role      Role     @default(USER)
+  quizzesPlayed Int
+  averageAnswers Int
+
+  completions UserQuizCompletion[]
+}
+
+model Quiz {
+  id          String      @id @default(uuid())
+  name        String
+  description String
+  rating      Float
+  imageUrl    String
+  createdAt   DateTime @default(now())
+
+  film        Film     @relation(fields: [filmId], references: [id], onDelete: Cascade)
+  filmId     String 
+
+  questions   Question[]
+
+  completions UserQuizCompletion[]
+}
+
+model UserQuizCompletion {
+  id        String      @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String 
+  quiz      Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  quizId   String 
+  rating    Float?  
+  completed Boolean  @default(true) 
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, quizId]) 
+}
+
+model Question {
+  id          String      @id @default(uuid())
+  question    String
+  description String
+  imageUrl    String
+  quiz        Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  quizId     String 
+
+  answers     AnswerVariant[]
+
+  createdAt   DateTime @default(now())
+}
+
+model AnswerVariant {
+  id        String      @id @default(uuid())
+  variant   String
+
+  question  Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId String 
+
+  createdAt DateTime @default(now())
+
+  @@unique([questionId, variant]) 
+}
+
+model Film {
+  id        String      @id @default(uuid())
+  title     String   @unique
+  createdAt DateTime @default(now())
+
+  quizzes   Quiz[]
+}
+  
+enum Role {
+  USER
+  ADMIN
+}
