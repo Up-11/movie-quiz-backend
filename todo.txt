@@ -1,0 +1,15 @@
+[] - register admin
+[] - roles
+[] - admin actions
+  [] - delete quiz
+  [] - create quiz
+  [] - delete user 
+  [] - delete self acc 
+  [] - edit admin profile
+[] - get all quizzes
+[] - search by quiz and film
+[] - add film
+[] - complete quiz
+[] - rating quiz
+[] - completed quizzes by user
+[] - edit user profile
