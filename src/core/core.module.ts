@@ -2,8 +2,9 @@ import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 
 import { AuthModule } from '../modules/auth/auth.module'
+import { MediaModule } from '../modules/media/media.module'
 import { QuizModule } from '../modules/quiz/quiz.module'
-import { StatisticModule } from '../modules/statistic/statistic.module'
+import { RatingModule } from '../modules/quiz/rating/rating.module'
 import { UserModule } from '../modules/user/user.module'
 import { IS_DEV } from '../shared/utils/is-dev.util'
 
@@ -19,8 +20,9 @@ import { DbService } from './db/db.service'
 		UserModule,
 		AuthModule,
 		QuizModule,
-		StatisticModule,
-		DbModule
+		DbModule,
+		MediaModule,
+		RatingModule
 	],
 	providers: [DbService]
 })

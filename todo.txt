@@ -1,15 +1,19 @@
-[] - register admin
-[] - roles
-[] - admin actions
-  [] - delete quiz
-  [] - create quiz
-  [] - delete user 
-  [] - delete self acc 
-  [] - edit admin profile
-[] - get all quizzes
-[] - search by quiz and film
-[] - add film
-[] - complete quiz
-[] - rating quiz
-[] - completed quizzes by user
-[] - edit user profile
+[x] - register admin
+[x] - roles
+[x] - admin actions
+  [x] - delete quiz
+  [x] - create quiz
+  [x] - delete user 
+  [x] - delete self acc 
+  [x] - edit admin profile
+  [x] - getUsers
+[x] - get all quizzes
+[x] - search by quiz and film
+[x] - add film
+[x] - complete quiz
+[x] - getQuizByID
+[x] - rating quiz
+[x] - completed quizzes by user
+[x] - user stat
+[x] - edit user profile
+[x] - media service

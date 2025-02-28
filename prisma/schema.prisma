@@ -24,7 +24,7 @@ model Quiz {
   id          String      @id @default(uuid())
   name        String
   description String
-  rating      Float
+  rating      Float?
   imageUrl    String
   createdAt   DateTime @default(now())
 
@@ -43,7 +43,8 @@ model UserQuizCompletion {
   quiz      Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
   quizId   String 
   rating    Float?  
-  completed Boolean  @default(true) 
+  correctAnswers Int
+  failedAnswers Int
 
   createdAt DateTime @default(now())
 

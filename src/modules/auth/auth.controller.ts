@@ -11,7 +11,7 @@ import { AuthService } from './auth.service'
 import { AUTH_ROUTES } from './config/auth.routes'
 import { AuthDto } from './dto/auth.dto'
 
-@Controller(AUTH_ROUTES.AUTH)
+@Controller(AUTH_ROUTES.INDEX)
 export class AuthController {
 	constructor(private readonly authService: AuthService) {}
 

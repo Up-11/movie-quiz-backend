@@ -9,16 +9,18 @@ async function bootstrap() {
 	app.setGlobalPrefix('api')
 	const config = app.get(ConfigService)
 
-	app.useGlobalPipes(
-		new ValidationPipe({
-			transform: true
-		})
-	)
 	app.enableCors({
 		origin: config.getOrThrow<string>('ALLOWED_ORIGIN'),
 		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 		credentials: true
 	})
+
+	app.useGlobalPipes(
+		new ValidationPipe({
+			transform: true,
+			whitelist: true
+		})
+	)
 	await app.listen(config.getOrThrow<number>('APPLICATION_PORT') ?? 8000)
 }
 bootstrap()
