@@ -52,28 +52,34 @@ model UserQuizCompletion {
 }
 
 model Question {
-  id          String      @id @default(uuid())
-  question    String
-  description String
-  imageUrl    String
-  quiz        Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
-  quizId     String 
+  id             String          @id @default(uuid()) 
+  question       String         
+  description    String         
+  imageUrl       String        
+  quiz           Quiz            @relation(fields: [quizId], references: [id], onDelete: Cascade) 
+  quizId         String 
 
-  answers     AnswerVariant[]
+  answers        AnswerVariant[] @relation("QuestionToAnswers") 
 
-  createdAt   DateTime @default(now())
+  correctAnswer  AnswerVariant?   @relation("QuestionToCorrectAnswer", fields: [correctAnswerId], references: [id], onDelete: SetNull) 
+  correctAnswerId String?  @unique 
+
+  createdAt      DateTime @default(now())
+
 }
 
 model AnswerVariant {
-  id        String      @id @default(uuid())
-  variant   String
+  id          String   @id @default(uuid()) 
+  variant     String   
 
-  question  Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
-  questionId String 
+  question    Question @relation("QuestionToAnswers", fields: [questionId], references: [id], onDelete: Cascade) 
+  questionId  String 
 
-  createdAt DateTime @default(now())
+  questionCorrect Question? @relation("QuestionToCorrectAnswer") 
 
-  @@unique([questionId, variant]) 
+  createdAt   DateTime @default(now())
+
+  @@unique([questionId, variant])
 }
 
 model Film {

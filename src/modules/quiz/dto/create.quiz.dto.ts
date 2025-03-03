@@ -1,12 +1,18 @@
 import { Type } from 'class-transformer'
 import { IsArray, IsString, ValidateNested } from 'class-validator'
 
-class CreateAnswerVariantDto {
+export class CreateAnswerVariantDto {
+	@IsString()
+	id: string
+
 	@IsString()
 	variant!: string
 }
 
-class CreateQuestionDto {
+export class CreateQuestionDto {
+	@IsString()
+	id: string
+
 	@IsString()
 	question!: string
 
@@ -16,6 +22,9 @@ class CreateQuestionDto {
 	@IsString()
 	imageUrl!: string
 
+	@IsString()
+	correctAnswerId!: string
+
 	@IsArray()
 	@ValidateNested({ each: true })
 	@Type(() => CreateAnswerVariantDto)
@@ -23,6 +32,9 @@ class CreateQuestionDto {
 }
 
 export class CreateQuizDto {
+	@IsString()
+	id: string
+
 	@IsString()
 	name!: string
 

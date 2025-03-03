@@ -9,7 +9,7 @@ import { compare, genSalt, hash } from 'bcryptjs'
 
 import { DbService } from '@/src/core/db/db.service'
 
-import { AuthDto } from './dto/auth.dto'
+import { LoginDto, RegisterDto } from './dto/auth.dto'
 
 @Injectable()
 export class AuthService {
@@ -18,7 +18,7 @@ export class AuthService {
 		private readonly jwtService: JwtService
 	) {}
 
-	async login(dto: AuthDto) {
+	async login(dto: LoginDto) {
 		const user = await this.validateUser(dto)
 
 		return {
@@ -26,14 +26,33 @@ export class AuthService {
 			accessToken: await this.issueAccessToken(user.id)
 		}
 	}
-
-	async register(dto: AuthDto) {
+	async createAdminAccount(dto: RegisterDto) {
 		const oldUser = await this.db.user.findUnique({
 			where: {
 				email: dto.email
 			}
 		})
-		if (oldUser) throw new BadRequestException('User already exists')
+		if (oldUser) throw new BadRequestException('Почта занята')
+
+		const salt = await genSalt(10)
+
+		await this.db.user.create({
+			data: {
+				name: dto.name,
+				password: await hash(dto.password, salt),
+				email: dto.email,
+				role: dto.role
+			}
+		})
+		return true
+	}
+	async register(dto: RegisterDto) {
+		const oldUser = await this.db.user.findUnique({
+			where: {
+				email: dto.email
+			}
+		})
+		if (oldUser) throw new BadRequestException('Почта занята')
 
 		const salt = await genSalt(10)
 
@@ -52,10 +71,11 @@ export class AuthService {
 		}
 	}
 
-	async validateUser(dto: AuthDto): Promise<User> {
+	async validateUser(dto: LoginDto): Promise<User> {
 		const user = await this.db.user.findUnique({
 			where: {
-				email: dto.email
+				email: dto.email,
+				name: dto.name
 			}
 		})
 		if (!user) throw new UnauthorizedException('Пользователь не найден')

@@ -9,7 +9,7 @@ import {
 
 import { AuthService } from './auth.service'
 import { AUTH_ROUTES } from './config/auth.routes'
-import { AuthDto } from './dto/auth.dto'
+import { LoginDto, RegisterDto } from './dto/auth.dto'
 
 @Controller(AUTH_ROUTES.INDEX)
 export class AuthController {
@@ -18,14 +18,21 @@ export class AuthController {
 	@UsePipes(new ValidationPipe())
 	@HttpCode(200)
 	@Post(AUTH_ROUTES.LOGIN)
-	async login(@Body() dto: AuthDto) {
+	async login(@Body() dto: LoginDto) {
 		return this.authService.login(dto)
 	}
 
 	@UsePipes(new ValidationPipe())
 	@HttpCode(200)
 	@Post(AUTH_ROUTES.REGISTER)
-	async register(@Body() dto: AuthDto) {
+	async register(@Body() dto: RegisterDto) {
 		return this.authService.register(dto)
+	}
+
+	@UsePipes(new ValidationPipe())
+	@HttpCode(200)
+	@Post(AUTH_ROUTES.CREATE_ADMIN)
+	async createNewAdmin(@Body() dto: RegisterDto) {
+		return this.authService.createAdminAccount(dto)
 	}
 }

@@ -25,10 +25,10 @@ export class UserController {
 	@Auth('ADMIN')
 	@Get(USER_ROUTES.ALL_USERS)
 	async getAllUsers(
-		@Body('role') role: Role,
+		@Query('role') role: Role,
 		@Query('searchTerm') searchTerm?: string
 	) {
-		return this.userService.getAllUsers(searchTerm, role)
+		return this.userService.getAllUsers(role, searchTerm)
 	}
 
 	@HttpCode(200)

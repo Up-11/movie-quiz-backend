@@ -45,7 +45,19 @@ export class QuizService {
 	async getAllQuizzes() {
 		return this.db.quiz.findMany({
 			include: {
-				film: true
+				film: {
+					select: { title: true }
+				},
+				_count: {
+					select: {
+						completions: true,
+						questions: true
+					}
+				}
+			},
+			omit: {
+				createdAt: true,
+				filmId: true
 			}
 		})
 	}
@@ -55,24 +67,30 @@ export class QuizService {
 		})
 	}
 	async createQuiz(dto: CreateQuizDto) {
-		console.log('DTO:', dto)
+		console.log('DTO:', JSON.stringify(dto, null, 2))
 
 		if (dto.questions.length === 0)
 			throw new BadRequestException('Нужно добавить хотя бы один вопрос')
 
+		const correctAnswers = dto.questions.map(curr => curr.correctAnswerId)
+		console.log(correctAnswers)
+
 		const newQuiz = await this.db.quiz.create({
 			data: {
+				id: dto.id,
 				name: dto.name,
 				description: dto.description,
 				imageUrl: dto.imageUrl,
 				film: { connect: { id: dto.filmId } },
 				questions: {
 					create: dto.questions.map(q => ({
+						id: q.id,
 						question: q.question,
 						description: q.description,
 						imageUrl: q.imageUrl,
 						answers: {
 							create: q.answers.map(a => ({
+								id: a.id,
 								variant: a.variant
 							}))
 						}
@@ -86,6 +104,29 @@ export class QuizService {
 				film: true
 			}
 		})
+
+		await Promise.all(
+			newQuiz.questions.map(async question => {
+				const correctAnswer = question.answers.find(a => {
+					console.log(a)
+					return correctAnswers.includes(a.id)
+				})
+				console.log(correctAnswer)
+
+				if (!correctAnswer) {
+					throw new BadRequestException(
+						`Правильный ответ для вопроса с id ${question.id} не найден`
+					)
+				}
+
+				await this.db.question.update({
+					where: { id: question.id },
+					data: {
+						correctAnswerId: correctAnswer.id
+					}
+				})
+			})
+		)
 
 		return newQuiz
 	}
