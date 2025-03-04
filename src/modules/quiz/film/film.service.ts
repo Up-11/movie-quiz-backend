@@ -15,7 +15,8 @@ export class FilmService {
 						mode: 'insensitive'
 					}
 				})
-			}
+			},
+			take: 5
 		})
 	}
 	async addFilm(title: string) {
@@ -34,10 +35,21 @@ export class FilmService {
 	}
 
 	async deleteFilm(title: string) {
-		return this.db.film.delete({
+		const quizzesInFilm = await this.db.quiz.findMany({
 			where: {
-				title
+				film: {
+					title
+				}
 			}
 		})
+		if (quizzesInFilm.length == 0) {
+			await this.db.film.delete({
+				where: {
+					title
+				}
+			})
+		} else {
+			throw new BadRequestException('Фильм уже используется в викторине')
+		}
 	}
 }

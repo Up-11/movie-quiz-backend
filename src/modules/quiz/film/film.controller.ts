@@ -4,6 +4,7 @@ import {
 	Delete,
 	Get,
 	HttpCode,
+	Param,
 	Post,
 	Query
 } from '@nestjs/common'
@@ -35,7 +36,7 @@ export class FilmController {
 	@HttpCode(200)
 	@Auth('ADMIN')
 	@Delete(QUIZ_ROUTES.DELETE_FILM)
-	async deleteFilm(@Body('title') title: string) {
+	async deleteFilm(@Param('title') title: string) {
 		return this.filmService.deleteFilm(title)
 	}
 }

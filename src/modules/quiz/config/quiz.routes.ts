@@ -10,8 +10,9 @@ export const QUIZ_ROUTES = {
 	FILM_INDEX: '/film',
 	ALL_FILMS: '',
 	ADD_FILM: '/add',
-	DELETE_FILM: '/delete',
+	DELETE_FILM: '/delete/:title',
 	RATING_INDEX: '/rating',
 	RATE_QUIZ: '/:id',
-	COMPLETE_QUIZ: '/complete'
+	COMPLETE_QUIZ_UNAUTH: '/complete',
+	COMPLETE_QUIZ_AUTH: '/complete-auth'
 }

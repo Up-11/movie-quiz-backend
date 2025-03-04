@@ -34,6 +34,7 @@ model Quiz {
   questions   Question[]
 
   completions UserQuizCompletion[]
+  completionsCount Int @default(0)
 }
 
 model UserQuizCompletion {

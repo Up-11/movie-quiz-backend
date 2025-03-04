@@ -13,7 +13,9 @@ export class RatingService {
 		})
 
 		const ratings = completions
-			.filter(completion => completion.rating !== null)
+			.filter(
+				completion => completion.rating !== null && completion.rating !== 0
+			)
 			.map(completion => completion.rating)
 
 		if (ratings.length > 0) {
@@ -35,11 +37,6 @@ export class RatingService {
 				'Не переданы обязательные параметры: quizId или userId'
 			)
 		}
-
-		if (typeof rating !== 'number' || rating < 1 || rating > 5) {
-			throw new BadRequestException('Рейтинг должен быть числом от 1 до 5')
-		}
-
 		const quiz = await this.db.userQuizCompletion.findUnique({
 			where: { userId_quizId: { userId, quizId } }
 		})

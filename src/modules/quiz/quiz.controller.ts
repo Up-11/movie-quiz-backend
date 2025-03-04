@@ -24,8 +24,8 @@ export class QuizController {
 
 	@HttpCode(200)
 	@Get(QUIZ_ROUTES.GET_ALL)
-	async getAllQuizzes() {
-		return this.quizService.getAllQuizzes()
+	async getAllQuizzes(@Query('searchTerm') searchTerm?: string) {
+		return this.quizService.getAllQuizzes(searchTerm)
 	}
 
 	@HttpCode(200)
@@ -36,13 +36,18 @@ export class QuizController {
 	}
 
 	@HttpCode(200)
+	@Post(QUIZ_ROUTES.COMPLETE_QUIZ_AUTH)
 	@Auth('USER')
-	@Post(QUIZ_ROUTES.COMPLETE_QUIZ)
-	async completeQuiz(
-		@CurrentUser('id') userId: string,
-		@Body() dto: CompleteQuizDto
+	async completeQuizAuth(
+		@Body() dto: CompleteQuizDto,
+		@CurrentUser('id') userId: string
 	) {
 		return this.quizService.completeQuiz(dto, userId)
+	}
+	@HttpCode(200)
+	@Post(QUIZ_ROUTES.COMPLETE_QUIZ_UNAUTH)
+	async completeQuizUnAuth(@Body() dto: CompleteQuizDto) {
+		return this.quizService.completeQuiz(dto)
 	}
 
 	@HttpCode(200)
@@ -54,16 +59,15 @@ export class QuizController {
 
 	@HttpCode(200)
 	@Get(QUIZ_ROUTES.GET_BY_ID)
-	async getQuizById(@Param('id') id: string) {
-		return this.quizService.getQuizById(id)
+	async getQuizById(@Param('id') id: string, @Query('userId') userId?: string) {
+		return this.quizService.getQuizById(id, userId)
 	}
 
 	@HttpCode(200)
-	@Auth()
 	@Get(QUIZ_ROUTES.SEARCH)
 	async searchQuiz(
 		@Query('searchTerm') searchTerm?: string,
-		@Body('searchBy') searchBy?: SearchType
+		@Query('searchBy') searchBy?: SearchType
 	) {
 		return this.quizService.searchQuizzes(searchTerm, searchBy)
 	}

@@ -1,6 +1,8 @@
 import { ValidationPipe } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
+import * as express from 'express'
+import * as path from 'path'
 
 import { CoreModule } from './core/core.module'
 
@@ -21,6 +23,8 @@ async function bootstrap() {
 			whitelist: true
 		})
 	)
+
+	app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')))
 	await app.listen(config.getOrThrow<number>('APPLICATION_PORT') ?? 8000)
 }
 bootstrap()
