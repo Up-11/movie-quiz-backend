@@ -27,7 +27,6 @@ async function bootstrap() {
 
 	app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')))
 	await app.listen(config.getOrThrow<number>('APPLICATION_PORT') ?? 8000)
-
 	const url = await app.getUrl()
 	console.log(url)
 }
