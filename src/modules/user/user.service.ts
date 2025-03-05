@@ -3,7 +3,7 @@ import {
 	Injectable,
 	NotFoundException
 } from '@nestjs/common'
-import { Role } from '@prisma/client'
+import type { Role } from '@prisma/client'
 import { genSalt, hash } from 'bcryptjs'
 
 import { DbService } from '@/src/core/db/db.service'
