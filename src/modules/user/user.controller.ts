@@ -8,7 +8,7 @@ import {
 	Patch,
 	Query
 } from '@nestjs/common'
-import { Role } from '@prisma/client'
+import type { Role } from '@prisma/client'
 
 import { Auth } from '@/src/shared/decorators/auth.decorator'
 import { CurrentUser } from '@/src/shared/decorators/current.user.decorator'
