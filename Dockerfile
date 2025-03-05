@@ -32,6 +32,7 @@ RUN yarn install --production
 COPY --from=build /app/dist ./dist
 
 COPY --from=build /app/node_modules/.prisma /app/node_modules/.prisma
+
 COPY --from=build /app/node_modules/@prisma /app/node_modules/@prisma
 
 RUN ls -la node_modules/@prisma
