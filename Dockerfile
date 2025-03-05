@@ -14,6 +14,8 @@ COPY . .
 
 RUN yarn prisma generate 
 
+RUN ls -la node_modules/@prisma
+
 RUN yarn build
 
 FROM base AS production
