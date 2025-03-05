@@ -1,11 +1,10 @@
-
 FROM node:20.17.0-alpine AS base
 
-RUN apk add --no-cache
+RUN apk add --no-cache 
 
 WORKDIR /app
 
-COPY package.json yarn.lock ./
+COPY package.json yarn.lock ./ 
 
 RUN yarn install --frozen-lockfile
 
@@ -23,13 +22,15 @@ ENV NODE_ENV=production
 
 WORKDIR /app
 
-COPY --from=build /app/package.json /app/yarn.lock ./
+COPY --from=build /app/package.json /app/yarn.lock
 
 RUN yarn install --production 
 
 COPY --from=build /app/dist ./dist
 
-COPY --from=build /app/node_modules/.prisma /app/node_modules/.prisma
-COPY --from=build /app/node_modules/@prisma /app/node_modules/@prisma
+COPY --from=build /app/prisma/__generated__ ./prisma/__generated__
 
 CMD ["node", "dist/main"]
+
+
+
