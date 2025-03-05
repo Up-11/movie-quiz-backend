@@ -25,9 +25,12 @@ async function bootstrap() {
 		})
 	)
 
+	const port = config.get<number>('APPLICATION_PORT') || 3000
+	const host = config.get<string>('APPLICATION_HOST') || '0.0.0.0'
+
 	app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')))
-	await app.listen(config.getOrThrow<number>('APPLICATION_PORT') ?? 8000)
+	await app.listen(port, host)
 	const domain = config.getOrThrow<string>('APPLICATION_URL')
-	console.log('Application Url:', domain)
+	console.log(port, host, domain)
 }
 bootstrap()
