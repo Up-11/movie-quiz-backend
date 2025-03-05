@@ -9,6 +9,9 @@ import { CoreModule } from './core/core.module'
 async function bootstrap() {
 	const app = await NestFactory.create(CoreModule)
 	app.setGlobalPrefix('api')
+	const url = app.getUrl()
+	console.log(url)
+
 	const config = app.get(ConfigService)
 
 	app.enableCors({
