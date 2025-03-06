@@ -310,7 +310,13 @@ export class QuizService {
 				userRating: completedQuiz ? completedQuiz.rating : null
 			}
 		}
-		return currentQuiz
+		return {
+			...currentQuiz,
+			_count: {
+				completions: currentQuiz.completionsCount,
+				questions: currentQuiz.questions.length
+			}
+		}
 	}
 
 	async getAllAuthQuizzes(userId: string) {
