@@ -270,10 +270,9 @@ export class QuizService {
 			},
 			where: { id },
 			include: {
-				_count: {
+				completions: {
 					select: {
-						completions: true,
-						questions: true
+						id: true
 					}
 				},
 				questions: {
@@ -300,8 +299,13 @@ export class QuizService {
 			const completedQuiz = await this.db.userQuizCompletion.findFirst({
 				where: { userId, quizId: currentQuiz.id }
 			})
+
 			return {
 				...currentQuiz,
+				_count: {
+					completions: currentQuiz.completionsCount,
+					questions: currentQuiz.questions.length
+				},
 				completed: completedQuiz ? true : false,
 				userRating: completedQuiz ? completedQuiz.rating : null
 			}
