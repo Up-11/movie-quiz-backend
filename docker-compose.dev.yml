@@ -13,7 +13,7 @@ services:
       - db_data:/var/lib/postgresql/data
 
   movie-quiz-backend-dev:
-    image: updf/movie-quiz-backend-app:v3.0
+    image: updf/movie-quiz-backend-app:v4.0
     restart: always
     environment:
       NODE_ENV: development
