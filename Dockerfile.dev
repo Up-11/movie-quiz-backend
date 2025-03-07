@@ -17,6 +17,7 @@ RUN npx prisma generate
 
 RUN ls -la node_modules/@prisma
 
-CMD ["npm", "run" , "start:dev"]
+CMD ["npx", "nest", "start", "--watch"]
+
 
 
