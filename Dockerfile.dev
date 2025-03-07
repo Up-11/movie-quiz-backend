@@ -37,5 +37,6 @@ COPY --from=build /app/node_modules/@prisma /app/node_modules/@prisma
 
 RUN ls -la node_modules/@prisma
 
-CMD ["run", "dist/main"]
+CMD ["yarn", "run" , "start:dev"]
+
 

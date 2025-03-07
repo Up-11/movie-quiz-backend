@@ -1,0 +1,33 @@
+services:
+  movie-quiz-database-dev:
+    image: updf/movie-quiz-database:v1.0
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: mqpassword
+      POSTGRES_DB: movie-quiz-db
+    ports:
+      - '5432:5432'
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  movie-quiz-backend-dev:
+    image: updf/movie-quiz-backend-app:v1.0
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    restart: always
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: 'postgresql://admin:mqpassword@movie-quiz-database-dev:5432/movie-quiz-db?schema=public'
+      JWT_SECRET: secret
+    ports:
+      - '4000:4000'
+    depends_on:
+      - movie-quiz-database-dev
+    volumes:
+      - .:/app
+
+volumes:
+  db_data:
