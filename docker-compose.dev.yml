@@ -22,6 +22,7 @@ services:
       NODE_ENV: development
       DATABASE_URL: 'postgresql://admin:mqpassword@movie-quiz-database-dev:5432/movie-quiz-db?schema=public'
       JWT_SECRET: secret
+      ALLOWED_ORIGIN: http://localhost:3000
     ports:
       - '4000:4000'
     depends_on:
